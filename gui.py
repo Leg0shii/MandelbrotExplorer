@@ -1,14 +1,16 @@
 from tkinter import Label, Tk, Canvas, PhotoImage, mainloop
+from colour import Color
 
 from mandel import is_diverging
 
 class MandelbrotWindow:
 
-    WIDTH, HEIGHT = 300, 300
+    WIDTH, HEIGHT = 600, 600
     BG_COLOR = "#000000"
 
     def __init__(self) -> None:
         self.window = Tk()
+        self.colors = list(Color("blue").range_to(Color("red"), 50))
 
         self.coord_label = Label(self.window, text="Test")
         self.coord_label.pack()
@@ -31,7 +33,7 @@ class MandelbrotWindow:
         self.positions = {}
         self.current_x = 2
         self.current_y = 2
-        self.scale = 2
+        self.scale = 3
 
         self._update_text_screen()
         self._update_screen()
@@ -84,10 +86,10 @@ class MandelbrotWindow:
         for x in range(self.WIDTH): # -3 to 1
             for y in range(self.HEIGHT): # -2 to 2
                 x_scaled, y_scaled = ((self.scale * x / self.WIDTH) - self.current_x, (self.scale * y / self.HEIGHT) - self.current_y)
-                is_div = is_diverging(complex(x_scaled, y_scaled))
-                
+                iter_count = is_diverging(complex(x_scaled, y_scaled))
+
                 color = "#000000"
-                if is_div:
-                    color = "#ffffff"
+                if iter_count > 0:
+                    color = self.colors[iter_count]
 
                 self._draw_pixel(x, y, color)

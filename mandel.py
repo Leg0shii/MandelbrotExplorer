@@ -1,18 +1,17 @@
 
-def is_diverging(c) -> bool:
-    MAX_ITERATIONS = 10 
-    THRESHOLD = 10
+def is_diverging(c) -> int:
+    MAX_ITERATIONS = 50
+    THRESHOLD = 2
 
     new_z = complex(0,0)
 
     try:
-        for _ in range(MAX_ITERATIONS):
+        for iteration_number in range(MAX_ITERATIONS):
+            if abs(new_z) >= THRESHOLD:
+                return iteration_number
+            
             new_z = new_z**2 + c
-
-        if abs(new_z) >= THRESHOLD:
-            return True
-        else: 
-            return False
         
+        return 0
     except:
-            return True
+        return 0
